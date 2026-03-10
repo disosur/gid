@@ -1,1 +1,48 @@
-gid
+# gid
+
+A CLI tool for switching between multiple GitHub accounts via SSH profiles.
+
+## Install
+
+```bash
+go install .
+```
+
+Make sure `~/go/bin` is in your `$PATH`.
+
+## Setup
+
+```bash
+gid setup
+```
+
+Walks you through configuring each profile — name, email, SSH key generation, and GitHub key registration.
+
+Profiles are stored in `~/.gid/profiles.json`.
+
+## Usage
+
+```bash
+# Switch to a profile
+gid use tulay
+
+# Show active profile
+gid status
+
+# Test SSH connection
+gid test tulay
+```
+
+## Starship Integration
+
+Add this to your `~/.config/starship.toml` to show the active profile in your prompt:
+
+```toml
+[custom.gid]
+command = """grep -o '"active": *"[^"]*"' ~/.gid/profiles.json 2>/dev/null | cut -d'"' -f4"""
+when = "test -f ~/.gid/profiles.json"
+symbol = "🔑 "
+format = "[$symbol($output)]($style) "
+style = "bold purple"
+shell = ["bash", "--noprofile", "--norc"]
+```
